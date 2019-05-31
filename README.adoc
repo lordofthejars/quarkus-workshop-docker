@@ -1,0 +1,14 @@
+You can run this by using: 
+
+`docker-compose run quarkus /bin/bash``
+
+You need to run it from a directory that contains folder called `code` so container project is mapped to host folder.
+
+Also needs `/tmp/maven/repository` folder so it can be used as temporal maven local repo with all Maven dependencies coming from container.
+You can configure this location by editing `.env` file.
+
+This will start the quarkus code + MariaDB for Panache tests.
+
+Finally if you don't want to use `docker-compose` you can use `docker` to start quarkus container:
+
+`docker run -it --rm --mount type=volume,dst=/quarkus-tutorial/work,volume-driver=local,volume-opt=type=none,volume-opt=o=bind,volume-opt=device="`pwd`"/code --mount type=volume,dst=/usr/share/maven/ref/repository,volume-driver=local,volume-opt=type=none,volume-opt=o=bind,volume-opt=device="/tmp/maven/repository" lordofthejars/quarkus-workshop:1.0.0 /bin/bash`

@@ -1,0 +1,41 @@
+version: '3'
+services:
+  mariadb:
+    container_name: mariadb
+    image: mariadb:10.4.4
+    environment:
+      MYSQL_DATABASE: mydatabase
+      MYSQL_ROOT_PASSWORD: developer
+      MYSQL_USER: developer
+    ports:
+    - "3306:3306"
+  quarkus:
+    container_name: quarkus
+    image: lordofthejars/quarkus-workshop:1.0.0
+    ports:
+    - "8080:8080"
+    - "5005:5005"
+    stdin_open: true
+    tty: true
+    entrypoint: ""
+    command: "/bin/bash"
+    depends_on:
+      - mariadb
+    volumes:
+      - workspace:/quarkus-tutorial/work
+      - maven:/usr/share/maven/ref/repository
+
+volumes:
+  maven:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${LOCAL_MAVEN_REPO}
+  workspace:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: $PWD/code
+    
